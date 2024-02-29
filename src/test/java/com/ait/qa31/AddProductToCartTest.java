@@ -1,26 +1,39 @@
 package com.ait.qa31;
 
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebElement;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 public class AddProductToCartTest extends TestBase{
 
 
+    @BeforeMethod
+    public void loginBeforeAddProduct () {
+        openLoginPage();
+        fillLoginForm();
+        submitLoginForm();
+        pause(5000);
+    }
+
     @Test
     public void createAddToCartPositiveTest() {
 
-        WebElement productItemTitle;
-        openProductCategory(By.cssSelector(".header-menu .top-menu li:first-child a"));
-        productItemTitle = getElement(By.cssSelector(".product-grid .product-item:first-child .product-title a"));
+        String productItemTitle;
+        openProductCategory();
+        productItemTitle = getProductItemTitle();
         addProductToCartClick();
-        pause(10000);
+        pause(3000);
         navigateToCart();
+        pause(3000);
+        Assert.assertTrue( isElementPresent(By.linkText( productItemTitle )));
 
-        Assert.assertTrue( isElementPresent(By.linkText( productItemTitle.getText() )));
+    }
 
-
+    @AfterMethod
+    public void logoutAfterTest () {
+        clickLogoutLink();
     }
 
 }

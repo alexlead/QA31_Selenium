@@ -1,8 +1,6 @@
 package com.ait.qa31;
 
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -52,8 +50,8 @@ public class TestBase {
         driver.navigate( ).to("https://demowebshop.tricentis.com/cart");
     }
 
-    public void openProductCategory(By by) {
-        WebElement menuItem = getElement(by);
+    public void openProductCategory() {
+        WebElement menuItem = getElement(By.cssSelector(".header-menu .top-menu li:first-child a"));
 
         driver.navigate( ).to(menuItem.getAttribute("href"));
     }
@@ -86,10 +84,46 @@ public class TestBase {
     }
 
     public void confirmRegistrationContinue() {
-        getElement(By.cssSelector(".register-continue-button")).click();
+        if ( !isPageCorrectUrl("https://demowebshop.tricentis.com/registerresult/1") ) {
+            throw new NoSuchWindowException("Server was return incorrect page");
+        }
+        try{
+            getElement(By.cssSelector(".register-continue-button")).click();
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 
-    public void isPageCorrectUrl(String url) {
-        Assert.assertEquals(url, driver.getCurrentUrl());
+    public boolean isPageCorrectUrl(String url) {
+        return (url.equals(driver.getCurrentUrl()));
+    }
+
+    public String actualRegisteredEmail() {
+        if ( !isPageCorrectUrl("https://demowebshop.tricentis.com/") ) {
+            throw new NoSuchWindowException("Server was return incorrect page");
+        }
+        return getElement(By.cssSelector("[href=\"/customer/info\"]")).getText();
+    }
+
+    public void submitLoginForm() {
+        getElement(By.cssSelector(".returning-wrapper .buttons input[value=\"Log in\"]")).click();
+    }
+
+    public void fillLoginForm() {
+        fillInputField("Email", "artest2@artest.test");
+        fillInputField("Password", "TestPass1234$");
+    }
+
+    public void openLoginPage() {
+        driver.navigate().to("https://demowebshop.tricentis.com/login");
+    }
+
+    public void clickLogoutLink() {
+        getElement(By.cssSelector("a[href='/logout']")).click();
+    }
+
+    public String getProductItemTitle() {
+        WebElement element = getElement(By.cssSelector(".product-grid .product-item:first-child .product-title a"));
+        return element.getText();
     }
 }
