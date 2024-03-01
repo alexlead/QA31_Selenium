@@ -1,6 +1,5 @@
 package com.ait.qa31;
 
-import org.openqa.selenium.By;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -21,18 +20,21 @@ public class AddProductToCartTest extends TestBase{
     public void createAddToCartPositiveTest() {
 
         String productItemTitle;
+        String cartElement;
         openProductCategory();
         productItemTitle = getProductItemTitle();
         addProductToCartClick();
         pause(3000);
         navigateToCart();
         pause(3000);
-        Assert.assertTrue( isElementPresent(By.linkText( productItemTitle )));
+        cartElement = getFirstElementFromCart();
+        Assert.assertEquals( cartElement, productItemTitle);
 
     }
 
     @AfterMethod
     public void logoutAfterTest () {
+        clearCart();
         clickLogoutLink();
     }
 

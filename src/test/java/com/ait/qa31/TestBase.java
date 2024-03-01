@@ -126,4 +126,15 @@ public class TestBase {
         WebElement element = getElement(By.cssSelector(".product-grid .product-item:first-child .product-title a"));
         return element.getText();
     }
+
+    public String getFirstElementFromCart() {
+        return driver.findElement(By.cssSelector("table.cart .product a")).getText();
+    }
+
+    public void clearCart() {
+        driver.findElement( By.cssSelector("table.cart .remove-from-cart [name='removefromcart']") ).click();
+        pause(300);
+        driver.findElement( By.name("updatecart") ).click();
+        pause(2000);
+    }
 }
