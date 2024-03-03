@@ -77,6 +77,19 @@ public class TestBase {
 
     }
 
+    public void fillCreateAccountFormFromCsv(String sex, String firstname, String lastname, String email, String password) {
+        getElement(By.cssSelector("#gender-"+sex)).click();
+        fillInputField("FirstName", firstname);
+
+        fillInputField("LastName", lastname);
+
+        fillInputField("Email", email);
+
+        fillInputField("Password", password);
+        fillInputField("ConfirmPassword", password);
+
+    }
+
     public void fillInputField(String inputFieldName, String value) {
         getElement(By.name(inputFieldName)).click();
         getElement(By.name(inputFieldName)).clear();
