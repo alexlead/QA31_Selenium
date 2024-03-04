@@ -17,3 +17,20 @@ dependencies {
 test {
     useTestNG()
 }
+
+task qaBrowser(type: Test) {
+    useTestNG()
+    if (project.hasProperty('browser')) {
+        systemProperty('browser', "${browser}")
+    }
+
+}
+
+task qaAddProduct(type: Test) {
+    useTestNG() {
+        suites 'src/test/resources/regression.xml'
+        if (project.hasProperty('browser')) {
+            systemProperty('browser', "${browser}")
+        }
+    }
+}
